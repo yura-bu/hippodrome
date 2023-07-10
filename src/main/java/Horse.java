@@ -45,6 +45,7 @@ public class Horse {
     }
 
     public static double getRandomDouble(double min, double max) {
+        System.out.println((Math.random() * (max - min)) + min);
         return (Math.random() * (max - min)) + min;
     }
 }

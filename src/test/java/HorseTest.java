@@ -1,5 +1,4 @@
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullSource;
@@ -11,13 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HorseTest{
-
     @ParameterizedTest
     @NullSource
     public void getHorseNullName(String name){
         Throwable exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> new Horse(name, 0, 0)
+                () -> new Horse(name, 0)
         );
         assertEquals("Name cannot be null.", exception.getMessage());
     }
@@ -26,20 +24,20 @@ public class HorseTest{
     public void getHorseBlankName(String name){
         Throwable exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> new Horse(name, 0, 0));
+                () -> new Horse(name, 0));
         assertEquals("Name cannot be blank.", exception.getMessage());
     }
     @ParameterizedTest
     @ValueSource(ints = {-1})
-    public void getHorseNegativeSpeed(int speed){
+    public void getHorseNegativeSpeed(double speed){
         Throwable exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> new Horse("Fast", speed, 0));
+                () -> new Horse("Fast", speed));
         assertEquals("Speed cannot be negative.", exception.getMessage());
     }
     @ParameterizedTest
     @ValueSource(ints = {-1})
-    public void getHorseNegativeDistance(int distance){
+    public void getHorseNegativeDistance(double distance){
         Throwable exception = assertThrows(
                 IllegalArgumentException.class,
                 () -> new Horse("Fast", 0, distance));
@@ -47,31 +45,33 @@ public class HorseTest{
     }
 
     @ParameterizedTest
-    @CsvSource({"Jock, 30, 40"})
-    public void getName(String name, int speed, int distance){
-        Horse horse = new Horse(name, speed, distance);
-        assertEquals("Jock", horse.getName());
+    @CsvSource({"Joke, 3"})
+    public void getName(String name, double speed){
+        Horse horse = new Horse(name, speed);
+        assertEquals("Joke", horse.getName());
     }
     @ParameterizedTest
-    @CsvSource({"Jock, 30, 40"})
-    public void getSpeed(String name, int speed, int distance){
-        Horse horse = new Horse(name, speed, distance);
-        assertEquals(30, horse.getSpeed());
+    @CsvSource({"Joke, 3"})
+    public void getSpeed(String name, double speed){
+        Horse horse = new Horse(name, speed);
+        assertEquals(speed, horse.getSpeed());
     }
     @ParameterizedTest
-    @CsvSource({"Jock, 30, 40"})
-    public void getDistance(String name, int speed, int distance){
+    @CsvSource({"Joke, 3, 4"})
+    public void getDistance(String name, double speed, double distance){
         Horse horse = new Horse(name, speed, distance);
-        assertEquals(40, horse.getDistance());
+        assertEquals(distance, horse.getDistance());
     }
-    @Test
-    void givenStaticMethodWithArgs(){
-        Horse horse = new Horse("Jock", 30, 40);
+    @ParameterizedTest
+    @CsvSource({"Joke, 3"})
+    void givenStaticMethodWithArgsAndFormulaDistancePlusSpeedMultiplyRandom(String name, double speed){
+        Horse horse = new Horse(name, speed);
         try(MockedStatic<Horse> mockStatic = Mockito.mockStatic(Horse.class)){
             mockStatic.when(()-> Horse.getRandomDouble(0.2d, 0.9d)).thenReturn(0.5);
             horse.move();
             mockStatic.verify(()-> Horse.getRandomDouble(0.2d, 0.9d));
         }
-
+        assertEquals(1.5, horse.getDistance());
     }
+
 }
