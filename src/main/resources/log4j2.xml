@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="info" name="MyApp" packages="">
-    <Appenders>
-        <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d %p %c{1.}: %m%n"/>
-        </Console>
-    </Appenders>
-    <Loggers>
-        <Root level="info">
-            <AppenderRef ref="STDOUT"/>
-        </Root>
-    </Loggers>
+<Configuration status="info" name="MyApp" >
+<Appenders>
+    <RollingFile name="RollingFile" fileName="logs/hippodrome.log"   filePattern="logs/app-%d{MM-dd-yyyy}.log.gz">
+<!--        <RegexFilter regex=".* Hippodrome .*" onMatch="ACCEPT" onMismatch="DENY"/>-->
+        <PatternLayout>
+            <Pattern>%d %p %c{1.} %m%n</Pattern>
+        </PatternLayout>
+        <TimeBasedTriggeringPolicy />
+    </RollingFile>
+</Appenders>
+<Loggers>
+    <Root level="Debug">
+        <AppenderRef ref="RollingFile"/>
+    </Root>
+</Loggers>
 </Configuration>
