@@ -8,6 +8,11 @@
         </PatternLayout>
         <TimeBasedTriggeringPolicy />
     </RollingFile>
+    <Delete>
+        <Delete basePath="${baseDir}"/>
+        <IfFileName glob="*.log"/>
+        <IfLastModified age="7d"/>
+    </Delete>
 </Appenders>
 <Loggers>
     <Root level="Debug">
