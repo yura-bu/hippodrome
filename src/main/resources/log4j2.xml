@@ -10,7 +10,7 @@
     </RollingFile>
     <Delete>
         <Delete basePath="${baseDir}"/>
-        <IfFileName glob="*.log"/>
+        <IfFileName glob="*.log.gz"/>
         <IfLastModified age="7d"/>
     </Delete>
 </Appenders>
